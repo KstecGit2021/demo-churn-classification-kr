@@ -1,34 +1,34 @@
-# basic packages
+# 기본 패키지
 import pandas as pd
 
-# taipy functions
+# 타이피 함수
 import taipy as tp
 from taipy.gui import Gui, Icon
 
-# get the config
+# 구성 가져오기
 from config.config import scenario_cfg
 from taipy.core.config.config import Config
 
 import os
 
-# import to create the temporary file
+# 임시 파일을 생성하기 위해 import
 import pathlib
 
-# this path is used to create a temporary file that will allow us to
-# download a table in the Datasouces page
+# 이 경로는 Datasouces 페이지에서 테이블을 다운로드할 수 있는 임시 파일을 만드는 데 사용됩니다.
+# 
 tempdir = pathlib.Path(".tmp")
 tempdir.mkdir(exist_ok=True)
 PATH_TO_TABLE = str(tempdir / "table.csv")
 
 ###############################################################################
-# we clean the data storage
+# 데이터 저장소를 청소합니다.
 ###############################################################################
 
 Config.configure_global_app(clean_entities_enabled=True)
 tp.clean_all_entities()
 
 ##############################################################################################################################
-# Execution of the scenario
+# 시나리오 실행
 ##############################################################################################################################
 
 def create_first_scenario(scenario_cfg):
@@ -39,7 +39,7 @@ def create_first_scenario(scenario_cfg):
 create_first_scenario(scenario_cfg)
 
 # ############################################################################################################################
-# Initialization - Values from the scenario can be read
+# 초기화 - 시나리오의 값을 읽을 수 있습니다.
 ##############################################################################################################################
 forecast_values_baseline = scenario.pipelines['pipeline_baseline'].forecast_dataset.read()
 forecast_values = scenario.pipelines['pipeline_model'].forecast_dataset.read()
@@ -58,7 +58,7 @@ select_y = select_x
 y_selected = select_y[1]
 
 ##############################################################################################################################
-# Initialization - Creation of a dataset that resume the results that will be used in a chart
+# 초기화 - 차트에 사용될 결과를 재개하는 데이터셋 생성
 ##############################################################################################################################
 from pages.main_dialog import *
 
@@ -79,23 +79,23 @@ scatter_dataset = creation_scatter_dataset(test_dataset)
 
 features_table = scenario.pipelines['pipeline_train_baseline'].feature_importance.read()
 
-# Comparison of pipelines
-# a generic code to take the correct pipelines
+# 올바른 파이프라인을 가져오는 일반 코드의 파이프라인 비교
+# 
 pipelines_to_compare = [pipeline for pipeline in scenario.pipelines if 'train' not in pipeline and 'preprocessing' not in pipeline]
 
 accuracy_graph, f1_score_graph, score_auc_graph = compare_models_baseline(scenario, pipelines_to_compare) # comes from the compare_models.py
 
 ##############################################################################################################################
-# Initialization - Creation of a pie chart to see the accuracy of the model that will be shown and also the distribution of the classes
+# 초기화 - 표시될 모델의 정확도와 클래스 분포를 보기 위한 파이 차트 생성
 ##############################################################################################################################
-# calculates the metrics for the 'baseline' model
+# '기준' 모델에 대한 메트릭을 계산합니다.
 (number_of_predictions,
  accuracy, f1_score, score_auc,
  number_of_good_predictions,
  number_of_false_predictions,
  fp_, tp_, fn_, tn_) = c_update_metrics(scenario, 'pipeline_baseline')
 
-# pie charts
+# 파이 차트
 pie_plotly = pd.DataFrame({"values": [number_of_good_predictions, number_of_false_predictions],
                            "labels": ["Correct predictions", "False predictions"]})
 
@@ -103,7 +103,7 @@ distrib_class = pd.DataFrame({"values": [len(values[values["Historical"]==0]),le
                               "labels" : ["Stayed", "Exited"]})
 
 ##############################################################################################################################
-# Initialization - Creation of the False/positive/negative/true table that will be shown
+# 초기화 - 표시될 False/positive/negative/true 테이블 생성
 ##############################################################################################################################
 
 score_table = pd.DataFrame({"Score":["Predicted stayed", "Predicted exited"],
@@ -114,7 +114,7 @@ pie_confusion_matrix = pd.DataFrame({"values": [tp_,tn_,fp_,fn_],
                               "labels" : ["True Positive","True Negative","False Positive",  "False Negative"]})
 
 ##############################################################################################################################
-# Initialization - Creation of the graphical user interface (state)
+# 초기화 - 그래픽 사용자 인터페이스 생성(상태)
 ##############################################################################################################################
 
 # The list of pages that will be shown in the menu at the left of the page
@@ -151,14 +151,14 @@ page_markdown = """
 # the initial page is the "Scenario Manager" page
 page = "Data Visualization"
 def menu_fct(state,var_name:str,fct,var_value):
-    """Functions that is called when there is a change in the menu control
+    """메뉴 컨트롤에 변경이 있을 때 호출되는 함수
 
     Args:
         state : the state object of Taipy
         var_name (str): the changed variable name 
         var_value (obj): the changed variable value
     """
-    # we change the value of the state.page variable in order to render the correct page
+    # 올바른 페이지를 렌더링하기 위해 state.page 변수의 값을 변경합니다.
     try :
         state.page = var_value['args'][0]
     except:
@@ -166,21 +166,21 @@ def menu_fct(state,var_name:str,fct,var_value):
     pass
 
 
-# Function for the prediction table. Bad predictions will be red and good predictions will be green (css class)
+# 예측 테이블을 위한 함수. 나쁜 예측은 빨간색이고 좋은 예측은 녹색입니다(css 클래스).
 def get_style(state, index, row):
     return 'red' if row['Historical']!=row['Forecast'] else 'green'
 
 
 ##############################################################################################################################
-# Creation of the entire markdown
+# 전체 마크다운 생성
 ##############################################################################################################################
 
 
-# dialog_md is found in main_dialog.py
+# dialog_md는 main_dialog.py에 있습니다.
 # the other are found in the dialogs folder
 entire_markdown = page_markdown + dialog_md
 
-# the object that will be used to generate the page
+# 페이지 생성에 사용될 객체
 gui = Gui(page=entire_markdown, css_file='main')
 dialog_partial_roc = gui.add_partial(dialog_roc)
 
@@ -191,9 +191,9 @@ partial_scatter_pred = gui.add_partial(creation_of_dialog_scatter_pred(x_selecte
 partial_histo_pred = gui.add_partial(creation_of_dialog_histogram_pred(x_selected))
 
 def update_partial_charts(state):
-    """This function updates 4 partials containing charts and selectors. Partials are a mini-page 
-    that can be reloaded in runtime with the functions below. They are reloaded in order to change the 
-    content of the charts.
+    """이 함수는 차트와 선택기를 포함하는 4개의 부분을 업데이트합니다. 
+    Partials는 아래 기능을 사용하여 런타임에 다시 로드할 수 있는 미니 페이지입니다. 
+    차트의 내용을 변경하기 위해 다시 로드됩니다.
 
     Args:
         state: object containing all the variables used in the GUI
@@ -206,12 +206,12 @@ def update_partial_charts(state):
 
 
 ##############################################################################################################################
-# Updating displayed variables
+# 표시된 변수 업데이트
 ##############################################################################################################################
 
 
 def update_variables(state, pipeline):
-    """This function updates the different variables and dataframes used in the application.
+    """이 함수는 응용 프로그램에서 사용되는 다양한 변수와 데이터 프레임을 업데이트합니다.
 
     Args:
         state: object containing all the variables used in the GUI
@@ -240,7 +240,7 @@ def update_variables(state, pipeline):
 
 
 def update_charts(state, pipeline_str, number_of_good_predictions, number_of_false_predictions, fp_, tp_, fn_, tn_):
-    """This function updates all the charts of the GUI.
+    """이 함수는 GUI의 모든 차트를 업데이트합니다.
 
     Args:
         state: object containing all the variables used in the GUI
@@ -280,12 +280,12 @@ def update_charts(state, pipeline_str, number_of_good_predictions, number_of_fal
 
 
 ##############################################################################################################################
-# on_change function
+# on_change 함수
 ##############################################################################################################################
 
-# the other functions are in the right folder in frontend/dialogs
+# 다른 기능은 frontend/dialogs의 오른쪽 폴더에 있습니다.
 def on_change(state, var_name, var_value):
-    """This function is called when a variable is changed in the GUI.
+    """이 함수는 GUI에서 변수가 변경될 때 호출됩니다.
 
     Args:
         state : object containing all the variables used in the GUI
@@ -311,13 +311,13 @@ def on_change(state, var_name, var_value):
 
 
 def delete_temp_csv():
-    """This function deletes the temporary csv file."""
+    """이 함수는 임시 csv 파일을 삭제합니다."""
     if os.path.exists(PATH_TO_TABLE):
         os.remove(PATH_TO_TABLE)
 
 def handle_temp_csv_path(state):
-    """This function checks if the temporary csv file exists. If it does, it is deleted. Then, the temporary csv file
-    is created for the right table
+    """임시 csv 파일이 존재하는지 확인하는 함수입니다. 존재하면 삭제합니다. 
+    그러면 임시 csv 파일이 오른쪽 테이블에 대해 생성됩니다.
 
     Args:
         state: object containing all the variables used in the GUI
@@ -335,7 +335,7 @@ def handle_temp_csv_path(state):
     
 
 ##############################################################################################################################
-# Running the Gui
+# GUI 실행
 ##############################################################################################################################
 if __name__ == '__main__':
     gui.run(title="Churn classification",

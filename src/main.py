@@ -148,7 +148,7 @@ page_markdown = """
 
 """
 
-# the initial page is the "Scenario Manager" page
+# 초기 페이지는 "시나리오 관리자" 페이지입니다.
 page = "Data Visualization"
 def menu_fct(state,var_name:str,fct,var_value):
     """메뉴 컨트롤에 변경이 있을 때 호출되는 함수

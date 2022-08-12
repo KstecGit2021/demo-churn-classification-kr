@@ -50,7 +50,7 @@ roc_dataset = scenario.pipelines['pipeline_baseline'].roc_data.read()
 
 test_dataset.columns = [str(column).upper() for column in test_dataset.columns]
 
-# it is for the data visualization with histogram and scatter plot
+# 히스토그램과 산점도를 이용한 데이터 시각화를 위한 것입니다.
 select_x = test_dataset.drop('EXITED',axis=1).columns.tolist()
 x_selected = select_x[0]
 
@@ -270,7 +270,7 @@ def update_charts(state, pipeline_str, number_of_good_predictions, number_of_fal
     state.histo_full_pred = creation_histo_full_pred(test_dataset, state.forecast_series)
 
     
-    # pie charts
+    # 파이 차트
     state.pie_plotly = pd.DataFrame({"values": [number_of_good_predictions, number_of_false_predictions],
                                      "labels": ["Correct predictions", "False predictions"]})
 

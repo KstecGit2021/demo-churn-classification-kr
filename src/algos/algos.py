@@ -9,21 +9,21 @@ import pandas as pd
 import numpy as np
 
 ##############################################################################################################################
-# Function used in the tasks
+# 작업에서 사용하는 함수
 ##############################################################################################################################
 
 def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime="None"):
-    """This function preprocess the dataset to be used in the model
+    """이 함수는 모델에서 사용할 데이터셋을 사전 처리합니다.
 
     Args:
-        initial_dataset (pd.DataFrame): the raw format when we first read the data
+        initial_dataset (pd.DataFrame): 데이터를 처음 읽을 때의 원시 형식
 
     Returns:
-        pd.DataFrame: the preprocessed dataset for classification
+        pd.DataFrame: 분류를 위해 사전 처리된 데이터 세트
     """
-    print("\n     Preprocessing the dataset...")
+    print("\n     데이터세트 전처리 중...")
     
-    #We filter the dataframe on the date
+    #날짜의 데이터 프레임을 필터링합니다.
     if date != "None":
         initial_dataset['Date'] = pd.to_datetime(initial_dataset['Date'])
         processed_dataset = initial_dataset[initial_dataset['Date'] <= date]
@@ -47,18 +47,18 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime="None"):
     
     processed_dataset = processed_dataset[[col for col in columns_to_select if col in processed_dataset.columns]]
 
-    print("     Preprocessing done!\n")
+    print("     전처리 완료!\n")
     return processed_dataset
 
 
 def create_train_test_data(preprocessed_dataset: pd.DataFrame):
-    """This function will create the train data by segmenting the dataset
+    """이 함수는 데이터 세트를 분할하여 기차 데이터를 생성합니다.
 
     Args:
-        preprocessed_dataset (pd.DataFrame): the preprocessed dataset
+        preprocessed_dataset (pd.DataFrame): 전처리된 데이터 세트
 
     Returns:
-        pd.DataFrame: the training dataset
+        pd.DataFrame: 훈련 데이터 세트
     """
     print("\n     Creating the training and testing dataset...")
     
@@ -66,38 +66,38 @@ def create_train_test_data(preprocessed_dataset: pd.DataFrame):
     
     train_data = pd.concat([X_train,y_train],axis=1)
     test_data = pd.concat([X_test,y_test],axis=1)
-    print("     Creating done!")
+    print("     생성 완료!")
     return train_data, test_data
 
 
 def train_model_baseline(train_dataset: pd.DataFrame):
-    """Function to train the Logistic Regression model
+    """로지스틱 회귀 모델을 훈련시키는 함수
 
     Args:
-        train_dataset (pd.DataFrame): the training dataset
+        train_dataset (pd.DataFrame): 학습 데이터셋
 
     Returns:
-        model (LogisticRegression): the fitted model
+        model (LogisticRegression): 피팅된 모델
     """
-    print("     Training the model...\n")
+    print("     모델 학습 중...\n")
     X,y = train_dataset.iloc[:,:-1],train_dataset.iloc[:,-1]
     model_fitted = LogisticRegression().fit(X,y)
-    print("\n    ",model_fitted," is trained!")
+    print("\n    ",model_fitted," 학습되었습니다!")
     
     importance_dict = {'Features' : X.columns, 'Importance':model_fitted.coef_[0]}
     importance = pd.DataFrame(importance_dict).sort_values(by='Importance',ascending=True)
     return model_fitted, importance
 
 def train_model(train_dataset: pd.DataFrame):
-    """Function to train the Logistic Regression model
+    """로지스틱 회귀 모델을 훈련시키는 함수
 
     Args:
-        train_dataset (pd.DataFrame): the training dataset
+        train_dataset (pd.DataFrame): 학습 데이터셋
 
     Returns:
-        model (RandomForest): the fitted model
+        model (RandomForest): 피팅된 모델
     """
-    print("     Training the model...\n")
+    print("     모델 학습 중...\n")
     X,y = train_dataset.iloc[:,:-1],train_dataset.iloc[:,-1]
     model_fitted = RandomForestClassifier().fit(X,y)
     print("\n    ",model_fitted," is trained!")

@@ -74,7 +74,7 @@ def train_model_baseline(train_dataset: pd.DataFrame):
     """로지스틱 회귀 모델을 훈련시키는 함수
 
     Args:
-        train_dataset (pd.DataFrame): 학습 데이터셋
+        train_dataset (pd.DataFrame): 학습 데이터세트
 
     Returns:
         model (LogisticRegression): 피팅된 모델
@@ -92,7 +92,7 @@ def train_model(train_dataset: pd.DataFrame):
     """로지스틱 회귀 모델을 훈련시키는 함수
 
     Args:
-        train_dataset (pd.DataFrame): 학습 데이터셋
+        train_dataset (pd.DataFrame): 학습 데이터
 
     Returns:
         model (RandomForest): 피팅된 모델
@@ -100,48 +100,48 @@ def train_model(train_dataset: pd.DataFrame):
     print("     모델 학습 중...\n")
     X,y = train_dataset.iloc[:,:-1],train_dataset.iloc[:,-1]
     model_fitted = RandomForestClassifier().fit(X,y)
-    print("\n    ",model_fitted," is trained!")
+    print("\n    ",model_fitted," 학습되었습니다!")
     
     importance_dict = {'Features' : X.columns, 'Importance':model_fitted.feature_importances_}
     importance = pd.DataFrame(importance_dict).sort_values(by='Importance',ascending=True)
     return model_fitted, importance
 
 def forecast(test_dataset: pd.DataFrame, trained_model: RandomForestClassifier):
-    """Function to forecast the test dataset
+    """테스트 데이터 세트를 예측하는 기능
 
     Args:
-        test_dataset (pd.DataFrame): the test dataset
-        trained_model (LogisticRegression): the fitted model
+        test_dataset (pd.DataFrame): 테스트 데이터 세트
+        trained_model (LogisticRegression): 피팅된 모델
 
     Returns:
-        forecast (pd.DataFrame): the forecasted dataset
+        forecast (pd.DataFrame): 예측 데이터 세트
     """
-    print("     Forecasting the test dataset...")
+    print("     테스트 데이터 세트 예측 중...")
     X,y = test_dataset.iloc[:,:-1],test_dataset.iloc[:,-1]
     #predictions = trained_model.predict(X)
     predictions = trained_model.predict_proba(X)[:, 1]
-    print("     Forecasting done!")
+    print("     예측 완료!")
     return predictions
 
 
 def forecast_baseline(test_dataset: pd.DataFrame, trained_model: LogisticRegression):
-    """Function to forecast the test dataset
+    """테스트 데이터 세트를 예측하는 기능
 
     Args:
-        test_dataset (pd.DataFrame): the test dataset
-        trained_model (LogisticRegression): the fitted model
+        test_dataset (pd.DataFrame): 테스트 데이터 세트
+        trained_model (LogisticRegression): 피팅된 모델
 
     Returns:
-        forecast (pd.DataFrame): the forecasted dataset
+        forecast (pd.DataFrame): 예측 데이터 세트
     """
-    print("     Forecasting the test dataset...")
+    print("     테스트 데이터 세트 예측 중...")
     X,y = test_dataset.iloc[:,:-1],test_dataset.iloc[:,-1]
     predictions = trained_model.predict_proba(X)[:, 1]
-    print("     Forecasting done!")
+    print("     예측 완료!")
     return predictions
 
 def roc_from_scratch(probabilities, test_dataset, partitions=100):
-    print("     Calculation of the ROC curve...")
+    print("     ROC 곡선의 계산...")
     y_test = test_dataset.iloc[:,-1]
     
     roc = np.array([])
@@ -152,25 +152,25 @@ def roc_from_scratch(probabilities, test_dataset, partitions=100):
     
     roc_np = roc.reshape(-1, 2)
     roc_data = pd.DataFrame({"False positive rate": roc_np[:, 0], "True positive rate": roc_np[:, 1]})
-    print("     Calculation done")
-    print("     Scoring...")
+    print("     계산 완료")
+    print("     스코어링중...")
 
     score_auc = roc_auc_score(y_test, probabilities)
-    print("     Scoring done\n")
+    print("     스코어링 완료\n")
 
     return roc_data, score_auc
 
 
 def true_false_positive(threshold_vector:np.array, y_test:np.array):
-    """Function to calculate the true positive rate and the false positive rate
+    """참양성률과 거짓양성률을 계산하는 함수
     
     Args:
-        threshold_vector (np.array): the test dataset
-        y_test (np.array): the fitted model
+        threshold_vector (np.array): 테스트 데이터 세트
+        y_test (np.array): 피팅된 모델
 
     Returns:
-        tpr (pd.DataFrame): the forecasted dataset
-        fpr (pd.DataFrame): the forecasted dataset
+        tpr (pd.DataFrame): 예측된 데이터 세트
+        fpr (pd.DataFrame): 예측된 데이터 세트
     """
     
     true_positive = np.equal(threshold_vector, 1) & np.equal(y_test, 1)
@@ -184,7 +184,7 @@ def true_false_positive(threshold_vector:np.array, y_test:np.array):
     return tpr, fpr
 
 def create_metrics(predictions:np.array, test_dataset:np.array):
-    print("     Creating the metrics...")
+    print("     메트릭 생성 중...")
     threshold = 0.5
     threshold_vector = np.greater_equal(predictions, threshold).astype(int)
     
@@ -211,7 +211,7 @@ def create_metrics(predictions:np.array, test_dataset:np.array):
                'number_of_good_predictions':number_of_good_predictions,
                'number_of_false_predictions':number_of_false_predictions}
     
-    print("     Creating the metrics done!")
+    print("     메트릭 생성 완료!")
     return metrics
 
     

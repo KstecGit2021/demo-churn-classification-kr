@@ -1,4 +1,4 @@
-# Roc Dialog
+# Roc 다이얼로그
 dr_show_roc = False
 
 def show_roc_fct(state):

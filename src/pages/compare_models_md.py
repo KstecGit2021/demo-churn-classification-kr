@@ -8,7 +8,7 @@ cm_dict_barmode = {"barmode": "stack","margin":{"t":30}}
 cm_options_md = "height={cm_height_histo}|width={cm_height_histo}|layout={cm_dict_barmode}"
 
 cm_compare_models_md = """
-# Model comparison
+# 모델 비교
 
 <br/>
 <br/>
@@ -25,14 +25,14 @@ cm_compare_models_md = """
 """
 
 def c_update_metrics(scenario, pipeline):
-    """This function updates the metrics of a scenario using a pipeline
+    """이 함수는 파이프라인을 사용하여 시나리오의 메트릭을 업데이트합니다.
 
     Args:
-        scenario (scenario): the selected scenario
-        pipeline (str): the name of the selected pipeline
+        scenario (scenario): 선택한 시나리오
+        pipeline (str): 선택한 파이프라인의 이름
 
     Returns:
-        obj: a number of values, lists that represent the metrics
+        obj: 여러 값, 메트릭을 나타내는 목록
     """
     metrics = scenario.pipelines[pipeline].metrics.read()
 
@@ -55,16 +55,16 @@ def c_update_metrics(scenario, pipeline):
 
 
 def compare_charts(accuracies, f1_scores, scores_auc, names):
-    """This funcion creates the pandas Dataframes (charts) used in the model comparison page
+    """이 함수는 모델 비교 페이지에서 사용되는 pandas 데이터 프레임(차트)을 생성합니다.
 
     Args:
-        accuracies (list): list of accuracies
-        f1_scores (list): list of f1 scores
-        scores_auc (list): list of auc scores
-        names (list): list of scenario names
+        accuracies (list): 정확도 목록
+        f1_scores (list): f1 점수 목록
+        scores_auc (list): auc 점수 목록
+        names (list): 시나리오 이름 목록
 
     Returns:
-        pd.DataFrame: the resulting three pd.DataFrame
+        pd.DataFrame: 세 개의 데이터프레임의 결과
     """
     accuracy_graph = pd.DataFrame(create_metric_dict(accuracies, "Accuracy", names))
     f1_score_graph = pd.DataFrame(create_metric_dict(f1_scores, "F1 Score", names))
@@ -73,14 +73,14 @@ def compare_charts(accuracies, f1_scores, scores_auc, names):
     return accuracy_graph, f1_score_graph, score_auc_graph
 
 def compare_models_baseline(scenario,pipelines):
-    """This function creates the objects for the pipeline comparison
+    """이 함수는 파이프라인 비교를 위한 개체를 생성합니다.
 
     Args:
-        scenario (scenario): the selected scenario
-        pipelines (str): the name of the selected pipeline
+        scenario (scenario): 선택한 시나리오
+        pipelines (str): 선택한 파이프라인의 이름
 
     Returns:
-        pd.DataFrame: the resulting three pd.DataFrame
+        pd.DataFrame: 세 개의 데이터프레임의 결과
     """
     accuracies = []
     f1_scores = []
@@ -99,15 +99,15 @@ def compare_models_baseline(scenario,pipelines):
     
 
 def create_metric_dict(metric, metric_name, names):
-    """This function creates a dictionary of metrics for mutliple pipelines that will be used in a Dataframe shown on the Gui
+    """이 함수는 Gui에 표시된 데이터 프레임에서 사용될 여러 파이프라인에 대한 메트릭 사전을 생성합니다.
 
     Args:
-        metric (list): the value of the metric
-        metric_name (str): the name of the metric
-        names (list): list of scenario names
+        metric (list): 메트릭 값
+        metric_name (str): 메트릭의 이름
+        names (list): 시나리오 이름 목록
 
     Returns:
-        dict: dicitonary used for a pandas Dataframe
+        dict: pandas 데이터프래임에 사용되는 사전
     """
     metric_dict = {}
     initial_list = [0]*len(names)

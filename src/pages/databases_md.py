@@ -1,4 +1,4 @@
-# Confusion matrix dialog
+# 혼동 행렬 대화 상자
 db_confusion_matrix_md = """
 <|part|render={db_table_selected=='Confusion Matrix'}|
 <center>
@@ -7,14 +7,14 @@ db_confusion_matrix_md = """
 |>
 """
 
-# Table for the train dataset
+# 학습 데이터 세트에 대한 테이블
 db_train_dataset_md = """
 <|part|render={db_table_selected=='Training Dataset'}|
 <|{train_dataset}|table|width=1400px|height=560px|>
 |>
 """
 
-# Table for the forecast dataset
+# 예측 데이터 세트에 대한 테이블
 db_forecast_dataset_md = """
 <|part|render={db_table_selected=='Forecast Dataset'}|
 <center>
@@ -23,20 +23,20 @@ db_forecast_dataset_md = """
 |>
 """
 
-# Table for the test dataset
+# 테스트 데이터 세트에 대한 테이블
 db_test_dataset_md = """
 <|part|render={db_table_selected=='Test Dataset'}|
 <|{test_dataset}|table|width=1400px|height=560px|>
 |>
 """
 
-# Selector to select the table to show
+# 표시할 테이블을 선택하는 선택기
 db_table_selector = ['Training Dataset', 'Test Dataset', 'Forecast Dataset', 'Confusion Matrix']
 db_table_selected = db_table_selector[0]
 
-# Aggregation of the strings to create the complete page
+# 전체 페이지를 만들기 위한 문자열 집계
 db_databases_md = """
-# Databases
+# 데이터베이스
 
 <|layout|columns=2 2 1|columns[mobile]=1|
 <|

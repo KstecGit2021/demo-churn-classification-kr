@@ -19,16 +19,16 @@ mm_height_histo = 530
 mm_margin_features = {'margin': {'l': 150, 'r': 50, 'b': 50, 't': 20}}
 
 def creation_scatter_dataset_pred(test_dataset:pd.DataFrame, forecast_series:pd.Series):
-    """This function creates the dataset for the scatter plot for the predictions.  For every column (except EXITED) will have a positive and negative version.
-    EXITED is here a binary indicating if the prediction is good or bad.
-    The positive column will have NaN when the Exited is zero and the negative column will have NaN when the Exited is one. 
+    """이 함수는 예측을 위한 산점도에 대한 데이터 세트를 생성합니다. 모든 열(EXITED 제외)에 대해 양수 및 음수 버전이 있습니다.
+    EXITED는 예측이 좋은지 나쁜지를 나타내는 바이너리입니다.
+    양수 열은 Exited가 0일 때 NaN을 가지며 음수 열은 Exited가 1일 때 NaN을 갖습니다. 
 
     Args:
-        test_dataset (pd.DataFrame): the test dataset
-        forecast_series (pd.DataFrame): the forecast dataset
+        test_dataset (pd.DataFrame): 테스트 데이터 세트
+        forecast_series (pd.DataFrame): 예측 데이터 세트
 
     Returns:
-        pd.DataFrame: the Dataframe used to display the Histogram
+        pd.DataFrame: 히스토그램을 표시하는 데 사용되는 데이터 프레임
     """
     
     scatter_dataset = test_dataset.copy()
@@ -49,9 +49,9 @@ def creation_scatter_dataset_pred(test_dataset:pd.DataFrame, forecast_series:pd.
 
 
 def creation_of_dialog_scatter_pred(column, state=None):
-    """This code generates the Markdown used for the scatter plot for the predictions. It is going to be used to change 
-    the partial (mini-page that can be reloaded). Selectors are created and the x and y of the graph is determined by changing it
-    here. The dictionary of properties is also changed depending on the column used.
+    """이 코드는 예측을 위한 산점도에 사용되는 마크다운을 생성합니다. 부분(다시 로드할 수 있는 미니 페이지)을 변경하는 데 사용됩니다. 
+    선택기가 생성되고 그래프의 x 및 y는 여기에서 변경하여 결정됩니다. 
+    속성의 사전도 사용하는 열에 따라 변경됩니다.
     """
     if column == 'AGE' or column == 'CREDITSCORE' and state is not None:
         state.dv_dict_overlay = {'barmode':'overlay',"margin":{"t":20}}
@@ -76,16 +76,16 @@ Select **y** \n \n <|{y_selected}|selector|lov={select_y}|dropdown|>
 
 
 def creation_histo_full_pred(test_dataset:pd.DataFrame,forecast_series:pd.Series):
-    """This function creates the dataset for the histogram plot for the predictions.  For every column (except PREDICTION) will have a positive and negative version.
-    PREDICTION is a binary indicating if the prediction is good or bad.
-    The positive column will have NaN when the PREDICTION is zero and the negative column will have NaN when the PREDICTION is one. 
+    """이 함수는 예측에 대한 히스토그램 플롯에 대한 데이터 세트를 생성합니다. 모든 열(PREDICTION 제외)에 대해 양수 및 음수 버전이 있습니다.
+    PREDICTION은 예측이 좋은지 나쁜지를 나타내는 이진법입니다.
+    PREDICTION이 0일 때 양수 열에는 NaN이 있고 PREDICTION이 1일 때 음수 열에는 NaN이 있습니다. 
 
     Args:
-        test_dataset (pd.DataFrame): the test dataset
-        forecast_series (pd.DataFrame): the forecast dataset
+        test_dataset (pd.DataFrame): 테스트 데이터 세트
+        Forecast_series (pd.DataFrame): 예측 데이터 세트
 
     Returns:
-        pd.DataFrame: the Dataframe used to display the Histogram
+        pd.DataFrame: 히스토그램을 표시하는 데 사용되는 데이터 프레임
     """
     histo_full = test_dataset.copy()
     histo_full['EXITED'] =  (histo_full['EXITED']!=forecast_series.to_numpy()).astype(int)
@@ -137,9 +137,9 @@ features_md = """
 """
 
 def creation_of_dialog_histogram_pred(column, state=None):
-    """This code generates the Markdown used for the scatter plot. It is going to be used to change 
-    the partial (mini-page that can be reloaded). The selector is created and the x of the graph is determined by changing it
-    here. The dictionary of properties is also changed depending on the column used.
+    """이 코드는 산점도에 사용된 마크다운을 생성합니다. 부분(다시 로드할 수 있는 미니 페이지)을 변경하는 데 사용됩니다. 
+    선택자가 생성되고 여기에서 변경하여 그래프의 x가 결정됩니다. 
+    속성의 사전도 사용하는 열에 따라 변경됩니다.
     """
     if column == 'AGE' or column == 'CREDITSCORE' and state is not None:
         state.dv_dict_overlay = {'barmode':'overlay',"margin":{"t":20}}
@@ -158,7 +158,7 @@ Select **x** \n \n <|{x_selected}|selector|lov={select_x}|dropdown=True|>
 
 
 mm_model_manager_md = """
-# Model Manager
+# 모델 매니저
 
 <|layout|columns=1 1 1 1|columns[mobile]=1|
 Algorithm

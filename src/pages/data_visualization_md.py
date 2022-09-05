@@ -5,7 +5,7 @@ import numpy as np
 dv_graph_selector = ['Histogram','Scatter']
 dv_graph_selected = dv_graph_selector[0]
 
-# Histograms dialog
+# 히스토그램 대화 상자
 dv_width_histo = "100%"
 dv_height_histo = 600
 
@@ -15,14 +15,14 @@ dv_select_x_ = ['CREDITSCORE', 'AGE', 'TENURE', 'BALANCE', 'NUMOFPRODUCTS', 'HAS
 
 
 def creation_scatter_dataset(test_dataset:pd.DataFrame):
-    """This function creates the dataset for the scatter plot.  For every column (except Exited) will have a positive and negative version.
-    The positive column will have NaN when the Exited is zero and the negative column will have NaN when the Exited is one.
+    """이 함수는 산점도에 대한 데이터셋을 생성합니다. 모든 열(Exited 제외)에 대해 양수 및 음수 버전이 있습니다.
+    양수 열은 Exited가 0일 때 NaN을 가지며 음수 열은 Exited가 1일 때 NaN을 갖습니다.
 
     Args:
-        test_dataset (pd.DataFrame): the test dataset
-
+        test_dataset (pd.DataFrame): 테스트 데이터 세트
+        
     Returns:
-        pd.DataFrame: the datafram
+        pd.DataFrame: 데이터프레임
     """
     scatter_dataset = test_dataset.copy()
 
@@ -41,9 +41,9 @@ def creation_scatter_dataset(test_dataset:pd.DataFrame):
 
 
 def creation_of_dialog_scatter(column, state=None):
-    """This code generates the Markdown used for the scatter plot. It is going to be used to change 
-    the partial (mini-page that can be reloaded). Selectors are created and the x and y of the graph is determined by changing it
-    here. The dictionary of properties is also changed depending on the column used.
+    """이 코드는 산점도에 사용되는 Markdown을 생성합니다. 부분(다시 로드할 수 있는 미니 페이지)을 변경하는 데 사용됩니다. 
+    선택기가 생성되고 그래프의 x 및 y는 여기에서 변경하여 결정됩니다. 
+    속성의 사전도 사용하는 열에 따라 변경됩니다.
     """
     if column == 'AGE' or column == 'CREDITSCORE' and state is not None:
         state.dv_dict_overlay = {'barmode':'overlay',"margin":{"t":20}}
@@ -74,17 +74,17 @@ Select **y** \n \n <|{y_selected}|selector|lov={select_y}|dropdown=True|>
 
 
 def creation_histo_full(test_dataset:pd.DataFrame):
-    """This function creates the dataset for the histogram plot.  For every column (except Exited) will have a positive and negative version.
-    The positive column will have NaN when the Exited is zero and the negative column will have NaN when the Exited is one. 
+    """이 함수는 히스토그램 플롯에 대한 데이터 세트를 생성합니다. 모든 열(Exited 제외)에 대해 양수 및 음수 버전이 있습니다.
+    Exited가 0일 때 양수 열에는 NaN이 있고 Exited가 1일 때 음수 열에는 NaN이 있습니다. 
 
     Args:
-        test_dataset (pd.DataFrame): the test dataset
+        test_dataset (pd.DataFrame): 테스트 데이터세트
 
     Returns:
-        pd.DataFrame: the Dataframe used to display the Histogram
+        pd.DataFrame: 히스토그램을 표시하는 데 사용되는 데이터 프레임
     """
     histo_full = test_dataset.copy()
-    # create a deterministic oversampling to have the same number of points for each class
+    # 각 클래스에 대해 동일한 수의 포인트를 갖도록 결정적 오버샘플링을 생성합니다.
     histo_1 = histo_full.loc[histo_full['EXITED'] == 1]    
     
     frames = [histo_full,histo_1,histo_1,histo_1]
@@ -101,9 +101,9 @@ def creation_histo_full(test_dataset:pd.DataFrame):
 
 
 def creation_of_dialog_histogram(column, state=None):
-    """This code generates the Markdown used for the histogram plot. It is going to be used to change 
-    the partial (mini-page that can be reloaded). Selectors are created and the x of the graph is determined by changing it
-    here. The dictionary of properties is also changed depending on the column used.
+    """이 코드는 히스토그램 플롯에 사용되는 마크다운을 생성합니다. 부분(다시 로드할 수 있는 미니 페이지)을 변경하는 데 사용됩니다. 
+    선택기가 생성되고 그래프의 x는 여기에서 변경하여 결정됩니다. 
+    속성의 사전도 사용하는 열에 따라 변경됩니다.
     """
     if column == 'AGE' or column == 'CREDITSCORE' and state is not None:
         state.dv_dict_overlay = {'barmode':'overlay',"margin":{"t":20}}
@@ -127,7 +127,7 @@ Select **x**: \n \n <|{x_selected}|selector|lov={select_x}|dropdown=True|>
     return md
 
 dv_data_visualization_md = """
-# Data Visualization
+# 데이터 시각화
 
 <|part|render={dv_graph_selected == 'Histogram'}|partial={partial_histo}|>
 

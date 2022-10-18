@@ -154,9 +154,9 @@ def menu_fct(state,var_name:str,fct,var_value):
     """메뉴 컨트롤에 변경이 있을 때 호출되는 함수
 
     Args:
-        state : the state object of Taipy
-        var_name (str): the changed variable name 
-        var_value (obj): the changed variable value
+        state : Taipy의 상태 객체
+        var_name (str): 변경된 변수명
+        var_value (obj): 변경된 변수 값
     """
     # 올바른 페이지를 렌더링하기 위해 state.page 변수의 값을 변경합니다.
     try :
@@ -196,7 +196,7 @@ def update_partial_charts(state):
     차트의 내용을 변경하기 위해 다시 로드됩니다.
 
     Args:
-        state: object containing all the variables used in the GUI
+        state: GUI에서 사용되는 모든 변수를 포함하는 객체
     """
     state.partial_scatter.update_content(state, creation_of_dialog_scatter(state.x_selected, state))
     state.partial_histo.update_content(state, creation_of_dialog_histogram(state.x_selected, state))
@@ -214,8 +214,8 @@ def update_variables(state, pipeline):
     """이 함수는 응용 프로그램에서 사용되는 다양한 변수와 데이터 프레임을 업데이트합니다.
 
     Args:
-        state: object containing all the variables used in the GUI
-        pipeline (str): the name of the pipeline used to update the variables
+        state: GUI에서 사용되는 모든 변수를 포함하는 객체
+        pipeline (str): 변수를 업데이트하는 데 사용되는 파이프라인의 이름
     """
     global scenario
     pipeline_str = 'pipeline_'+pipeline
@@ -243,14 +243,14 @@ def update_charts(state, pipeline_str, number_of_good_predictions, number_of_fal
     """이 함수는 GUI의 모든 차트를 업데이트합니다.
 
     Args:
-        state: object containing all the variables used in the GUI
-        pipeline_str (str): the name of the pipeline shown
-        number_of_good_predictions (int): number of good predictions
-        number_of_false_predictions (int): number of false predictions
-        fp_ (float): false positive rate
-        tp_ (float): true positive rate
-        fn_ (float): false negative rate
-        tn_ (float): true negative rate
+        state: GUI에서 사용되는 모든 변수를 포함하는 객체
+        pipeline_str(str): 표시된 파이프라인의 이름
+        number_of_good_predictions(int): 좋은 예측의 수
+        number_of_false_predictions(int): 잘못된 예측의 수
+        fp_ (float): 위양성 비율
+        tp_ (float): 참 긍정 비율
+        fn_ (float): 위음성 비율
+        tn_ (float): 참 음수 비율
     """
     state.roc_dataset = scenario.pipelines[pipeline_str].roc_data.read()
     
@@ -288,9 +288,9 @@ def on_change(state, var_name, var_value):
     """이 함수는 GUI에서 변수가 변경될 때 호출됩니다.
 
     Args:
-        state : object containing all the variables used in the GUI
-        var_name (str): name of the changed variable
-        var_value (obj): value of the changed variable
+        state : GUI에서 사용되는 모든 변수를 포함하는 객체
+        var_name (str): 변경된 변수의 이름
+        var_value (obj): 변경된 변수의 값
     """
     if var_name == 'x_selected' or var_name == 'y_selected':
         update_partial_charts(state)
@@ -302,7 +302,7 @@ def on_change(state, var_name, var_value):
             update_variables(state,'model')
         
     if (var_name == 'mm_algorithm_selected' or var_name == "db_table_selected" and state.page == 'Databases') or (var_name == 'page' and var_value == 'Databases'):
-        # if we are on the 'Databases' page, we have to create an temporary csv file
+        # '데이터베이스' 페이지에 있는 경우 임시 csv 파일을 만들어야 합니다.
         handle_temp_csv_path(state)
            
     if var_name == 'page' and var_value != 'Databases':
@@ -320,7 +320,7 @@ def handle_temp_csv_path(state):
     그러면 임시 csv 파일이 오른쪽 테이블에 대해 생성됩니다.
 
     Args:
-        state: object containing all the variables used in the GUI
+        state: GUI에서 사용되는 모든 변수를 포함하는 객체
     """
     if os.path.exists(PATH_TO_TABLE):
         os.remove(PATH_TO_TABLE)
